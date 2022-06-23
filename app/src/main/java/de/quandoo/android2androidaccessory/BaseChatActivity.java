@@ -2,32 +2,13 @@ package de.quandoo.android2androidaccessory;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+import android.view.View;
+import de.quandoo.android2androidaccessory.databinding.ActivityChatBinding;
 
 public abstract class BaseChatActivity extends AppCompatActivity {
 
-    @InjectView(R.id.content_text)
-    TextView contentTextView;
-
-    @InjectView(R.id.input_edittext)
-    EditText input;
-
-    @OnClick(R.id.send_button)
-    public void onButtonClick() {
-        final String inputString = input.getText().toString();
-        if (inputString.length() == 0) {
-            return;
-        }
-
-        sendString(inputString);
-        printLineToUI(getString(R.string.local_prompt) + inputString);
-        input.setText("");
-    }
+    private ActivityChatBinding binding;
 
     protected abstract void sendString(final String string);
 
@@ -35,16 +16,32 @@ public abstract class BaseChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_chat);
-        ButterKnife.inject(this);
+        binding = ActivityChatBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        binding.sendButton.setOnClickListener(new ButtonClickListener());
+        setContentView(view);
+    }
 
+    public class ButtonClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            final String inputString = binding.inputEdittext.getText().toString();
+            if (inputString.length() == 0) {
+                return;
+            }
+
+            sendString(inputString);
+            printLineToUI(getString(R.string.local_prompt) + inputString);
+            binding.inputEdittext.setText("");
+        }
     }
 
     protected void printLineToUI(final String line) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                contentTextView.setText(contentTextView.getText() + "\n" + line);
+                binding.contentText.setText(binding.contentText.getText() + "\n" + line);
             }
         });
     }
