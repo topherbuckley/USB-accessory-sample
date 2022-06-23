@@ -1,42 +1,53 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:7.2.1'
     }
-}
-
-repositories {
-    jcenter()
 }
 
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+    google()
+}
+
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "de.quandoo.android2androidaccessory"
-        minSdkVersion 12
-        targetSdkVersion 21
+        minSdkVersion 14
+        targetSdkVersion 32
         versionCode 1
         versionName "1.1"
     }
 
+    buildTypes{
+        debug{}
+        release{}
+    }
+
+    flavorDimensions "version"
     productFlavors {
-        host
-        device
+        host {
+            dimension "version"
+        }
+        device {
+            dimension "version"
+        }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.jakewharton:butterknife:6.0.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.jakewharton:butterknife:6.0.0'
 }

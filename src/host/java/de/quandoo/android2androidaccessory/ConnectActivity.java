@@ -6,13 +6,13 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
 
-public class ConnectActivity extends ActionBarActivity {
+public class ConnectActivity extends AppCompatActivity {
 
     public static final String DEVICE_EXTRA_KEY = "device";
     private UsbManager mUsbManager;
@@ -34,7 +34,7 @@ public class ConnectActivity extends ActionBarActivity {
         final HashMap<String, UsbDevice> deviceList = mUsbManager.getDeviceList();
 
         if (deviceList == null || deviceList.size() == 0) {
-            final Intent intent=new Intent(this,InfoActivity.class);
+            final Intent intent = new Intent(this, InfoActivity.class);
             startActivity(intent);
 
             finish();
@@ -45,7 +45,7 @@ public class ConnectActivity extends ActionBarActivity {
             return;
         }
 
-        for (UsbDevice device:deviceList.values()) {
+        for (UsbDevice device : deviceList.values()) {
             initAccessory(device);
         }
 

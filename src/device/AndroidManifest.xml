@@ -5,6 +5,7 @@
     <application>
 
         <activity android:name=".ChatActivity"
+            android:exported="true"
             android:screenOrientation="landscape">
 
             <intent-filter>

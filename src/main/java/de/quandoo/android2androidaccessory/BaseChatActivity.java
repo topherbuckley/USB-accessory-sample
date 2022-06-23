@@ -1,18 +1,15 @@
 package de.quandoo.android2androidaccessory;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public abstract class BaseChatActivity extends ActionBarActivity {
+public abstract class BaseChatActivity extends AppCompatActivity {
 
     @InjectView(R.id.content_text)
     TextView contentTextView;

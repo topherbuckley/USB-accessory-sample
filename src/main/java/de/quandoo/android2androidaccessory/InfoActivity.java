@@ -1,10 +1,10 @@
 package de.quandoo.android2androidaccessory;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 
-public class InfoActivity extends ActionBarActivity {
+public class InfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
