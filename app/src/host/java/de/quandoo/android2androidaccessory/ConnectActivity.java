@@ -69,7 +69,8 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     private boolean isUsbAccessory(final UsbDevice device) {
-        return (device.getProductId() == 0x2d00) || (device.getProductId() == 0x2d01);
+//        return (device.getProductId() == 0x2d00) || (device.getProductId() == 0x2d01);
+        return true;
     }
 
     private boolean initAccessory(final UsbDevice device) {

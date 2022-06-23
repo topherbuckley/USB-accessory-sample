@@ -27,9 +27,11 @@ android {
     productFlavors {
         host {
             dimension "version"
+            applicationIdSuffix ".host"
         }
         device {
             dimension "version"
+            applicationIdSuffix ".device"
         }
     }
 
