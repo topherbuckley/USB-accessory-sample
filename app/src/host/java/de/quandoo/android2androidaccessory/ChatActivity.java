@@ -32,35 +32,7 @@ public class ChatActivity extends BaseChatActivity {
 
     private final AtomicBoolean keepThreadAlive = new AtomicBoolean(true);
     private final List<String> sendBuffer = new ArrayList<>();
-
-    private static final String ACTION_USB_PERMISSION =
-            "com.android.example.USB_PERMISSION";
-    private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (ACTION_USB_PERMISSION.equals(action)) {
-                synchronized (this) {
-                    UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-
-                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-                        if(device != null){
-                            //call method to set up device communication
-                            ExecutorService executorService = Executors.newSingleThreadExecutor();
-                            executorService.execute(() -> connect(device));
-                        }
-                    }
-                    else {
-                        Log.d("ChatActivity", "permission denied for device " + device);
-                    }
-                }
-            }
-        }
-    };
-
-    private PendingIntent permissionIntent;
     private UsbManager usbManager;
-    private Intent usbPermissionIntent;
 
     @Override
     protected void sendString(final String string) {
@@ -70,20 +42,14 @@ public class ChatActivity extends BaseChatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        usbPermissionIntent = new Intent(ACTION_USB_PERMISSION);
 
-        permissionIntent = PendingIntent.getBroadcast(this, 0, usbPermissionIntent, 0);
-        IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
-        registerReceiver(usbReceiver, filter);
-
-        final UsbDevice device=getIntent().getParcelableExtra(ConnectActivity.DEVICE_EXTRA_KEY);
-        usbPermissionIntent.putExtra("DEVICE", device);
-        usbManager.requestPermission(device, permissionIntent);
+        UsbDevice device = getIntent().getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> chat(device));
     }
 
-    private void connect(UsbDevice device){
+    private void chat(UsbDevice device){
         UsbEndpoint endpointIn = null;
         UsbEndpoint endpointOut = null;
 
